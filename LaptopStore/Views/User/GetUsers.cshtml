@@ -1,0 +1,64 @@
+﻿@using LaptopStore.Data.Models
+@using LaptopStore.ViewModels
+@model UserListViewModel
+
+@{
+    Layout = "";
+}
+<h5 class="card-title">Users</h5>
+<hr/>
+<div class="card mb-4 box-shadow text-center">
+    <div class="big-table">
+        <table class="table table-striped">
+            <thead class="table-light">
+            <tr style="width:100%">
+                <th scope="col" style="width:10%">Id</th>
+                <th scope="col" style="width:30%">Login</th>
+                <th scope="col" style="width:30%">Email</th>
+                <th scope="col" style="width:20%">Role</th>
+                <th scope="col" style="width:10%"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (User user in @Model.allUsers)
+            {
+                <tr style="width:100%">
+                    <td style="width:10%">@user.id</td>
+                    <td style="width:30%">@user.loginName</td>
+                    <td style="width:30%">@user.email</td>
+                    <td style="width:20%">@user.role</td>
+                    <td style="width:10%">
+                        <form asp-action="DeleteUser" asp-controller="User" asp-route-id="@user.id" method="post">
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--
+section pageScripts
+{
+    <script>
+        function model() {
+            return {
+                name: $('input#Name').val(),
+                role: $('#selectRoleId').val(),
+                address: $('textarea#Address').val(),
+            }
+        };
+        
+       $('#saveBtn').on('click', function () {
+           $.ajax({
+               url: '@Url.Action("Save")',
+               type: 'POST',
+               data: model(),
+           }) 
+      });
+    </script>
+}
+-->

@@ -1,0 +1,15 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Favorites";
+    //Layout = "_Layout";
+}
+
+<div class="row mt-2 mb-4">
+    @{                        
+        foreach(Laptop laptop in Model.favLaptops)
+        {
+                @Html.Partial("Laptops", laptop)
+        }
+    }
+</div>

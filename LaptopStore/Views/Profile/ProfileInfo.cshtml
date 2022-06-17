@@ -1,0 +1,67 @@
+﻿@using LaptopStore.TagHelpers
+@model Profile
+
+<div class="row">
+  <div class="col-sm-5">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Profile Info</h5>
+        <ul id="profile" class="list-group list-group-flush">
+            <li class="list-group-item">First Name: @Model?.firstName</li>
+            <li class="list-group-item">Last Name: @Model?.lastName</li>
+            <li class="list-group-item">Age: @Model?.age</li>
+            <li class="list-group-item">Address: @Model?.address</li>
+            <li class="list-group-item">
+                <button class="btn btn-secondary btn-lg" type="button" onclick="changeProfile()">Change</button>
+            </li>
+        </ul>
+        <form  id="profile_change" class="needs-validation" asp-action="Save" method="post" hidden="hidden">
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item">First Name: 
+                <input type="text" asp-for="id" class="form-control" hidden="hidden" value="@Model.id"/>
+                <input type="text" asp-for="userId" class="form-control" hidden="hidden" value="@Model.userId"/>
+                <input type="text" asp-for="firstName" class="form-control" />
+            </li>
+            <li class="list-group-item">Last Name: 
+                <input type="text" asp-for="lastName" class="form-control" />
+            </li>
+            <li class="list-group-item" onchange="validateAge(this.children)">Age: 
+                <input type="number" asp-for="age" class="form-control" />
+            </li>
+            <li class="list-group-item">Address: 
+                <input type="text" asp-for="address" class="form-control" />
+            </li>
+            <li class="list-group-item">
+                <button class="btn btn-primary btn-lg" type="submit">Save</button>
+                <button class="btn btn-secondary btn-lg" type="button" onclick="toProfile()">Back</button>
+            </li>
+
+            </ul>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <div class="card">
+      <div class="card-body">
+            @if (User.IsInRole("Admin"))
+            {
+                @Html.RenderAction("GetUsers", "User");
+            }
+            @Html.RenderAction("UserOrders", "User")
+      </div>
+    </div>
+  </div>
+</div>
+
+ <script>
+    function changeProfile() {
+        document.getElementById("profile").setAttribute("hidden","hidden");
+        document.getElementById("profile_change").removeAttribute("hidden");
+    }
+
+    function toProfile() {
+        document.getElementById("profile_change").setAttribute("hidden","hidden");
+        document.getElementById("profile").removeAttribute("hidden");
+    }
+ </script>

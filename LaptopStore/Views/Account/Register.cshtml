@@ -1,0 +1,48 @@
+﻿@model RegisterViewModel
+
+<form class="form-signin needs-validation" asp-controller="Account" asp-action="Register" method="post">
+    <div class="md-form">
+        <i class="fas fa-envelope prefix grey-text d-flex"></i>
+        <label for="email">Email</label>
+        <input type="email" asp-for="email" class="form-control" placeholder="You@example.com" required="">
+        <div class="invalid-feedback">
+            Please enter a valid email address.
+        </div>
+    </div>
+
+    <div class="md-form">
+        <i class="fas fa-envelope prefix grey-text d-flex"></i>
+        <label for="loginName">Login Name</label>
+        <input type="text" asp-for="loginName" class="form-control" placeholder="Login" required="">
+        <div class="invalid-feedback">
+            Please enter your login.
+        </div>
+    </div>
+    
+    <div class="md-form" onkeyup="validatePassword(this.parentElement)">
+        <i class="fas fa-lock prefix grey-text d-flex"></i>
+        <label for="password">Password</label>
+        <input type="password" asp-for="password" class="form-control" placeholder="Password" required="">
+        <div class="invalid-feedback">
+            Password must be at least 6 characters.
+        </div>
+    </div>
+
+    <div class="md-form" onkeyup="confirmPassword(this.parentElement)">
+        <i class="fas fa-lock prefix grey-text d-flex"></i>
+        <label for="password">Confirm password</label>
+        <input type="password"  asp-for="passwordConfirm" class="form-control" placeholder="Confirm password" required="">
+        <div class="invalid-feedback">
+            Please confirm your password.
+        </div>
+    </div>
+
+    <div class="text-center">
+        <p class="alert-warning align-content-lg-center">@Model.errorMessage</p>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-lg btn-primary">Create account</button>
+    </div>
+</form>
+<script src="~/js/FieldValidate.js"></script>

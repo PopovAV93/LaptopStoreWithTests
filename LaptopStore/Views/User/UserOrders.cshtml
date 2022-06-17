@@ -1,0 +1,51 @@
+﻿@using LaptopStore.Data.Models
+@using LaptopStore.ViewModels
+@model OrderListViewModel
+
+@{
+    Layout = "";
+}
+
+@if (Model.userOrders.Count() != 0)
+{
+    <h5 class="card-title">Orders</h5>
+    <hr/>
+}
+@foreach (Order order in Model.userOrders)
+{
+    <div class="card mb-4 box-shadow text-center">
+        <div class="card-header">
+        <h5 class="my-0 font-weight-normal">Order: #@order.id</h5>
+        </div>
+        <div class="card-body">
+            @foreach (OrderDetail orderDetail in order.orderDetails)
+            {
+            <table>
+                <tr style="width: 100%; display: block;">
+                    <td style="width: 30%;">
+                        <img class="card-img-top" alt="@orderDetail.laptop.name [30%]"  
+                            src="@orderDetail.laptop.imgUrl" data-holder-rendered="true">
+                    </td>
+                    <td style="width: 70%;">
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>@orderDetail.laptop.name</li>
+                            <li>@orderDetail.laptop.price.ToString("c", System.Globalization.CultureInfo.GetCultureInfo("en-us"))</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+            }
+        <h5 class="my-0 font-weight-normal">Total: 
+            @order.orderDetails.Sum(o => (decimal) o.price).ToString("c", System.Globalization.CultureInfo.GetCultureInfo("en-us"))
+        </h5>
+        </div>
+        <div class="card-footer">
+            <form asp-action="DeleteOrder" asp-controller="Order" asp-route-id="@order.id" method="post">
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Cancel the order
+                </button>
+            </form>
+        </div>
+    </div>
+}

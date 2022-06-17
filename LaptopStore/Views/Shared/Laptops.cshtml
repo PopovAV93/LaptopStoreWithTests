@@ -1,0 +1,21 @@
+﻿@model Laptop
+<div class="col-md-4" style="min-width:380px;">
+    <div class="card mb-3 box-shadow" style="height:95%; min-width:350px; display: block;">
+        <a asp-controller="Laptops" asp-action="LaptopDetails" asp-route-id="@Model.id">
+            <img class="card-link" alt="@Model.name [100%x260]"  style="height: 40%; width: 100%; display: block;" src="@Model.imgUrl" data-holder-rendered="true">
+        </a>
+        <div class="card-body" style="height: 50%; width: 100%; display: block;" >
+            <h2>@Model.name</h2>
+            <p class="card-text">@Model.shortDesc</p>
+        </div>
+        <div class="card-footer align-bottom" style="height: 10%; width: 100%; display: block;">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a class="btn btn-sm btn-outline-secondary" asp-controller="Laptops" asp-action="LaptopDetails" asp-route-id="@Model.id">More</a>
+                    <a class="btn btn-sm btn-outline-warning" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.id">Add to cart</a>
+                </div>
+                <h5 class="text-muted">Price: @Model.price.ToString("c", System.Globalization.CultureInfo.GetCultureInfo("en-us"))</h5>
+            </div>
+        </div>
+    </div>
+</div>

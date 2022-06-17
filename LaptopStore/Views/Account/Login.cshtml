@@ -1,0 +1,30 @@
+﻿@model LoginViewModel
+
+<form class="needs-validation" asp-controller="Account" asp-action="Login" method="post">
+    <div class="md-form">
+        <i class="fas fa-envelope prefix grey-text d-flex"></i>
+        <label for="email">Email</label>
+        <input type="email" asp-for="email" class="form-control" placeholder="You@example.com" required="">
+        <div class="invalid-feedback">
+            Please enter a valid email address.
+        </div>
+    </div>
+
+    <div class="md-form" onkeyup="validatePassword(this.parentElement)">
+        <i class="fas fa-lock prefix grey-text d-flex"></i>
+        <label for="password">Password</label>
+        <input type="password" asp-for="password" class="form-control" placeholder="Password" required="">
+        <div class="invalid-feedback">
+            Password must be at least 6 characters.
+        </div>
+    </div>
+
+    <div class="text-center">
+        <p class="alert-warning align-content-lg-center">@Model.errorMessage</p>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-lg btn-primary" type="submit">Login</button>
+    </div>
+</form>
+<script src="~/js/FieldValidate.js"></script>

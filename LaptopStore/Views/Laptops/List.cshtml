@@ -1,0 +1,11 @@
+﻿@model LaptopListViewModel
+
+<h3>@Model.currCategory</h3>
+<div class="row mt-5 mb-2">
+    @{                        
+        foreach(Laptop laptop in Model.allLaptops)
+        {
+                @Html.Partial("Laptops", laptop)
+        }
+    }
+</div>

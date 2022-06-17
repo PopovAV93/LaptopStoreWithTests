@@ -1,0 +1,54 @@
+﻿@using LaptopStore.ViewModels
+@model CartViewModel
+<body>
+    <div class="container">
+        @if (Model.cart.itemsCount == 0)
+        {
+            <div class="aler alert-warning mt-3">
+                <b>Your shopping cart is empty!</b>
+            </div>
+        }
+        else
+        {
+            <div class="card mb-4 box-shadow text-center">
+                <div class="card-header">
+                <h5 class="my-0 font-weight-normal">Order</h5>
+                </div>
+                <div class="card-body">
+                    @foreach (var el in Model.cart.ListCartItems)
+                    {
+                        <table style="width: 100%; display: block;">
+                            <tr style="width: 100%;">
+                                <td style="width: 30%;">
+                                    <img class="card-img-top" style="max-width:300px" alt="@el.laptop.name [30%]"  
+                                        src="@el.laptop.imgUrl" data-holder-rendered="true">
+                                </td>
+                                <td style="width: 50%;">
+                                    <ul class="list-unstyled mt-3 mb-4">
+                                        <li>@el.laptop.name</li>
+                                        <li>@el.laptop.price.ToString("c", System.Globalization.CultureInfo.GetCultureInfo("en-us"))</li>
+                                    </ul>
+                                </td>
+                                <td style="width: 20%;">
+                                    <a class="btn btn-sm btn-danger" asp-controller="Cart" asp-action="DeleteFromCart" asp-route-id="@el.id">Delete from cart</a>
+                                </td>
+                            </tr>
+                        </table>
+                        <hr/>
+                    }
+                    <h5 class="my-0 font-weight-normal">Total: @Model.cart.ListCartItems.Sum(o => (decimal) o.price).ToString("c", System.Globalization.CultureInfo.GetCultureInfo("en-us"))</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a class="btn btn-warning btn-lg" id="btnMakeOrder" asp-controller="Order" asp-action="Checkout" style="cursor:pointer">
+                            Make order
+                        </a>
+                        <a class="btn btn-lg btn-danger" asp-controller="Cart" asp-action="Clear" asp-route-cartId="@Model.cart.CartId">
+                            Clear cart
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
+</body>

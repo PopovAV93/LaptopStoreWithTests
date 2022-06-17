@@ -1,0 +1,129 @@
+﻿@using LaptopStore.ViewModels
+<!DOCTYPE html>
+<html lang="en">
+
+    <div class="modal fade" id="signIn">
+        <div class="modal-dialog">
+            <div class="modal-content" id="login">
+                <div class="face front">
+                    <div class="card-body">
+                        <!-- Header -->
+                        <div class="form-header primary-color">
+                            <h3 class="font-weight-500 my-2 py-1"><i class="fas fa-sign-in-alt"></i> Log in</h3>
+                        </div>
+                        @Html.Partial("~/Views/Account/Login.cshtml", new LoginViewModel())
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <a type="button" tabIndex="-1" data-card="my-card" 
+                                onclick="toRegister()">create account</a>
+                            <!--<a href="#" class="grey-text" tabIndex="-2">forgot password?</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-content" id="register" hidden="hidden">
+                <div class="face back">
+                    <div class="card-body">
+                        <!-- Header -->
+                        <div class="form-header primary-color">
+                            <h3 class="font-weight-500 my-2 py-1"><i class="fas fa-plus"></i> Create Account</h3>
+                        </div>
+                        @Html.Partial("~/Views/Account/Register.cshtml", new RegisterViewModel())
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end">
+                            <a type="button" data-card="my-card" tabIndex="-3" onclick="toLogin()">back to login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LaptopStore</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/bigTable.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LaptopStore</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav ml-auto">
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="my-2 my-md-0 mr-md-3">
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#singIn" 
+                                    onclick="$('#signIn').modal('show')">Sign in</button> 
+                            </li>
+                        } 
+                        else
+                        {
+                            <li class="nav-item dropdown my-2 my-md-0 mr-md-3">
+                                <a class="nav-link text-dark" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-controller="" asp-action="">Account</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="ProfileInfo">Info</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Log out</a>
+                                </div>
+                            </li>
+                        }
+                        <li class="my-2 my-md-0 mr-md-3">
+                            <a class="btn btn-outline-warning" asp-controller="Cart" asp-action="Index">Cart</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Favorites</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Privacy" asp-action="Index">Privacy</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" asp-controller="Laptops" asp-action="List">Laptops</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Laptops" asp-action="List" asp-route-category="All">All</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Laptops" asp-action="List" asp-route-category="Gaming">Gaming</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Laptops" asp-action="List" asp-route-category="Ultrathin">Ultrathin</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Laptops" asp-action="List" asp-route-category="Office">Office</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Laptops" asp-action="List" asp-route-category="Transformer">Transformer</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container mt-5">
+        <main role="main" class="pb-3">
+            <h1>@ViewData["Title"]</h1>
+            <hr />
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - LaptopStore - <a asp-area="" asp-controller="Privacy" asp-action="Index">Privacy</a>
+        </div>
+    </footer>
+
+    
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/LoginAndRegister.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
