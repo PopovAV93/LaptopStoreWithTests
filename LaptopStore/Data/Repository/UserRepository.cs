@@ -32,8 +32,7 @@ namespace LaptopStore.Data.Repository
         public async Task Delete(long id)
         {
             User user = _db.Users.Single(x => x.id == id);
-            _db.Users.Remove(user);
-            await _db.SaveChangesAsync();
+            await Delete(user);
         }
 
         public async Task Create(User user)

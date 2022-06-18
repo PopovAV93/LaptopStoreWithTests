@@ -17,16 +17,18 @@ using Microsoft.Extensions.Configuration;
 using LaptopStore.Data.Repository;
 using LaptopStore.Data.Mocks;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using LaptopStore.Data.Response;
+using LaptopStore.Data.Enum;
 
-namespace LaptopStore.IntegrationTests.RepositoryTests
+namespace LaptopStore.IntegrationTests
 {
     [TestFixture]
-    public class CategoryRepositoryTests
+    public class CartTests
     {
         private readonly TestHelper testHelper = new();
 
         [Test]
-        public async Task Create_ShouldAddCategoryToDataBase()
+        public async Task AddToCart_ShouldAddCartItemsToDataBase()
         {
             // Arrange
 
@@ -35,70 +37,68 @@ namespace LaptopStore.IntegrationTests.RepositoryTests
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
 
-            Category category = new Category() { categoryName = "Test", desc = "Test" };
-
+            Laptop laptop = new Laptop() { name = "Test", shortDesc = "Test", longDesc = "Test", price = 2000 };
+            
             // Act
 
-            CategoryRepository repository = new CategoryRepository(dbContext);
-            await repository.Create(category);
+            Cart cart = new Cart(dbContext);
+            cart.AddToCart(laptop);
 
             // Assert
 
-            Assert.That(category, Is.EqualTo(dbContext.Categories.FirstOrDefault()));
+            Assert.That(dbContext.CartItems.FirstOrDefault() is not null);
         }
 
         [Test]
-        public async Task GetCategoryByLaptop_ShouldReturnCategoryByLaptop()
+        public async Task DeleteFromCart_ShouldDeleteCartItem()
         {
             // Arrange
+
             AppDBContent dbContext = testHelper.GetAppDBContent();
 
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
 
-            List<Category> mockCategories = new MockLaptopCategories().AllCategories.ToList();
-
-            Laptop laptop = new Laptop() {
-                Category = mockCategories.FirstOrDefault(), 
-                categoryId = mockCategories.FirstOrDefault().id, 
-                name = "Test" 
-            };
-
-            await dbContext.Categories.AddRangeAsync(mockCategories);
-
+            Laptop laptop = new Laptop() { name = "Test", shortDesc = "Test", longDesc = "Test", price = 2000 };
+            CartItem cartItem = new CartItem { laptop = laptop, price = laptop.price };
+            
+            await dbContext.CartItems.AddAsync(cartItem);
             await dbContext.SaveChangesAsync();
 
             // Act
 
-            Category categorie = new CategoryRepository(dbContext).GetCategoryByLaptop(laptop);
+            Cart cart = new Cart(dbContext);
+            cart.DeleteFromCart(cartItem);
 
             // Assert
 
-            Assert.That(mockCategories.FirstOrDefault(), Is.EqualTo(categorie));
+            Assert.That(dbContext.CartItems.FirstOrDefault() is null);
         }
 
         [Test]
-        public async Task GetAll_ShouldReturnAllCategories()
+        public async Task GetCartItems_ShouldReturnCartItems()
         {
             // Arrange
+
             AppDBContent dbContext = testHelper.GetAppDBContent();
 
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
 
-            List<Category> mockCategories = new MockLaptopCategories().AllCategories.ToList();
-
-            await dbContext.Categories.AddRangeAsync(mockCategories);
-
+            Laptop laptop = new Laptop() { name = "Test", shortDesc = "Test", longDesc = "Test", price = 2000 };
+            CartItem cartItem1 = new CartItem { laptop = laptop, price = laptop.price };
+            
+            await dbContext.CartItems.AddAsync(cartItem1);
             await dbContext.SaveChangesAsync();
 
             // Act
 
-            IQueryable<Category> allCategories = new CategoryRepository(dbContext).GetAll();
+            Cart cart = new Cart(dbContext);
+            CartItem cartItem2 = cart.GetCartItems().FirstOrDefault();
 
             // Assert
 
-            Assert.That(mockCategories, Is.EqualTo(allCategories));
+            Assert.That(cartItem2, Is.EqualTo(cartItem1));
         }
     }
 }

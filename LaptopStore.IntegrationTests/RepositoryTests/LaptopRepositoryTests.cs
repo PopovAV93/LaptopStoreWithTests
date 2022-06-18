@@ -23,13 +23,14 @@ namespace LaptopStore.IntegrationTests.RepositoryTests
     [TestFixture]
     public class LaptopRepositoryTests
     {
+        private readonly TestHelper testHelper = new();
 
         [Test]
         public async Task Create_ShouldAddLaptopToDataBase()
         {
             // Arrange
 
-            AppDBContent dbContext = GetAppDBContent();
+            AppDBContent dbContext = testHelper.GetAppDBContent();
 
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
@@ -51,7 +52,7 @@ namespace LaptopStore.IntegrationTests.RepositoryTests
         {
             // Arrange
 
-            AppDBContent dbContext = GetAppDBContent();
+            AppDBContent dbContext = testHelper.GetAppDBContent();
 
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
@@ -82,7 +83,7 @@ namespace LaptopStore.IntegrationTests.RepositoryTests
         {
             // Arrange
 
-            AppDBContent dbContext = GetAppDBContent();
+            AppDBContent dbContext = testHelper.GetAppDBContent();
 
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
@@ -114,7 +115,7 @@ namespace LaptopStore.IntegrationTests.RepositoryTests
         {
             // Arrange
 
-            AppDBContent dbContext = GetAppDBContent();
+            AppDBContent dbContext = testHelper.GetAppDBContent();
 
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
@@ -143,7 +144,7 @@ namespace LaptopStore.IntegrationTests.RepositoryTests
         {
             // Arrange
 
-            AppDBContent dbContext = GetAppDBContent();
+            AppDBContent dbContext = testHelper.GetAppDBContent();
 
             await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
@@ -165,16 +166,6 @@ namespace LaptopStore.IntegrationTests.RepositoryTests
             // Assert
 
             Assert.That(laptops, Is.EqualTo(allLaptops));
-        }
-
-        private AppDBContent GetAppDBContent()
-        {
-            var contextOptions = new DbContextOptionsBuilder<AppDBContent>().UseInMemoryDatabase("db_test")
-                        .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning)).Options;
-
-            var context = new AppDBContent(contextOptions);
-
-            return context;
         }
     }
 }

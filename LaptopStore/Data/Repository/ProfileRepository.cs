@@ -32,7 +32,7 @@ namespace LaptopStore.Data.Repository
                 {
                     return new BaseResponse<Profile>()
                     {
-                        Description = "Пользователь не найден",
+                        Description = "User not found",
                         StatusCode = StatusCode.UserNotFound
                     };
                 }
